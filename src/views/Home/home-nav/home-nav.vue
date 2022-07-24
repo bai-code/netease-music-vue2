@@ -1,7 +1,7 @@
 <template>
-  <el-row type="flex" justify="space-between" align="middle">
+  <el-row type="flex"  align="middle">
     <el-col :span="6" class="home-logo"> </el-col>
-    <el-col :span="6" class="search">
+    <el-col :span="6" class="search" :offset="2">
       <el-autocomplete
         popper-class="input-search"
         v-model="state"
@@ -21,13 +21,13 @@
         </template>
       </el-autocomplete>
     </el-col>
-    <el-col :span="5" class="avatar">
+    <el-col :span="6" class="avatar" :offset="4">
       <div class="show-avatar">
         <img :src="userInfo.avatarUrl" alt="" />
         <span
           class="overflow"
           :title="userInfo.nickname"
-          @click="isSpread = true"
+          @click="spreadControls"
           >{{ userInfo.nickname }}</span
         >
       </div>
@@ -40,18 +40,26 @@
         <li>退出登录</li>
       </ul>
     </el-col>
+
+    <!-- 登录弹窗 -->
+    <Login :dialogVisible="dialogVisible"  @closeDialog='closeDialog' />
   </el-row>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Login from '@/views/Login/login.vue'
 export default {
   data() {
     return {
       restaurants: [],
       state: '',
-      isSpread: false
+      isSpread: false, //展开控制
+      dialogVisible: false // 弹窗
     }
+  },
+  components: {
+    Login
   },
   computed: {
     ...mapState({
@@ -202,7 +210,13 @@ export default {
       console.log(ev)
     },
     // 展开 选项
-    spreadControls() {},
+    spreadControls() {
+      if (this.userInfo.token) {
+        this.isSpread = true
+      } else {
+        this.dialogVisible = true
+      }
+    },
     // 控制选项
     async selectItems(e) {
       const detail = e.target.textContent
@@ -221,11 +235,12 @@ export default {
           })
         }
       }
-      console.log(detail)
-
       this.isSpread = false
-
+    },
+    closeDialog(flag){
+      this.dialogVisible=flag
     }
+   
   },
   mounted() {
     this.restaurants = this.loadAll()
