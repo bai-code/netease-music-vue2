@@ -29,8 +29,12 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="resetForm('ruleForm')">重 置</el-button>
-        <el-button type="primary" @click="submitForm('ruleForm')"
-         class="submit-btn" :loading='isLoading'>确 定</el-button
+        <el-button
+          type="primary"
+          @click="submitForm('ruleForm')"
+          class="submit-btn"
+          :loading="isLoading"
+          >确 定</el-button
         >
       </span>
     </el-dialog>
@@ -46,6 +50,7 @@ export default {
     }
   },
   data() {
+    // 验证手机号码 密码
     const validatePhone = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('手机号不能为空'))
@@ -54,21 +59,20 @@ export default {
         /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
       if (!phoneReg.test(value)) {
         callback(new Error('号码验证失败'))
-      } 
-        callback()
+      }
+      callback()
     }
     const validatePassword = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入密码'))
       } else {
-				const passReg = /\w{6,16}/
+        const passReg = /\w{6,16}/
         if (!passReg.test(value)) {
-					callback(new Error('密码不符合规范'))
+          callback(new Error('密码不符合规范'))
         }
         callback()
       }
     }
-// 17179795962
     return {
       ruleForm: {
         phone: '17179795962',
@@ -78,30 +82,30 @@ export default {
         phone: [{ validator: validatePhone, trigger: 'blur' }],
         password: [{ validator: validatePassword, trigger: 'blur' }]
       },
-			isLoading:false,
-			timer:null,
+      isLoading: false,
+      timer: null
     }
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-					this.isLoading=true
-         const flag = await this.$store.dispatch('loginModule/userLogin',this.ruleForm)
-					 this.$message({
-						 type:flag?'success':'error',
-						 message:flag?'登录成功':'登录失败'
-					 })
-					 this.timer = setTimeout(() => {  //美化登录效果
-
-						this.isLoading=false
-				 		this.closeDialog()
-					 this.resetForm('ruleForm')
-
-					 }, 1000);
-					 
-				//  console.log(flag);
-        } 
+          this.isLoading = true
+          const flag = await this.$store.dispatch(
+            'loginModule/userLogin',
+            this.ruleForm
+          )
+          this.$message({
+            type: flag ? 'success' : 'error',
+            message: flag ? '登录成功' : '登录失败'
+          })
+          this.timer = setTimeout(() => {
+            //美化登录效果
+            this.isLoading = false
+            this.closeDialog()
+            this.resetForm('ruleForm')
+          }, 600)
+        }
       })
     },
     resetForm(formName) {
@@ -120,23 +124,23 @@ export default {
         .catch((_) => {})
     }
   },
-	beforeDestroy(){
-		clearTimeout(this.timer)
-		this.timer=null
-	}
+  beforeDestroy() {
+    clearTimeout(this.timer)
+    this.timer = null
+  }
 }
 </script>
 
 <style lang="less" scoped>
 /deep/.dialog-container {
   margin-top: 20vh !important;
-	padding: 0 20px;
-	.el-dialog__body{
-		padding: 15px 15px 0 15px !important;
-	}
-	.el-button.submit-btn{
-		width: 100px;
-	}
+  padding: 0 20px;
+  .el-dialog__body {
+    padding: 15px 15px 0 15px !important;
+  }
+  .el-button.submit-btn {
+    width: 100px;
+  }
 }
 
 h3.title-center {

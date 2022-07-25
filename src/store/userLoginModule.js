@@ -6,15 +6,17 @@ const  loginTempUserInfo =  {
   nickname: '未登录',
   token: ''
 }
+
+// 读取本地用户信息
 const userInfo = JSON.parse(localStorage.getItem('userInfo')) || loginTempUserInfo
 
-console.log(userInfo);
 export default {
   namespaced: true,
   state: {
     userInfo,
   },
-  mutations: {
+  mutations: { 
+    // 登录 或  退出 修改本地存储信息
     changeUserLoginStatus(state, { avatarUrl, nickname, token }) {
       const userInfo = {
         avatarUrl,
@@ -30,15 +32,12 @@ export default {
       const { profile:{avatarUrl,nickname}, token, code } = await $axios.get(
         `/login/cellphone?phone=${phone}&password=${password}`
       )
-      // const res = await $axios.post('/register/anonimous')
-      // const res = await $axios.get('/personalized/newsong')
       if (code === 200) {
         commit('changeUserLoginStatus',{avatarUrl,nickname,token})
         return true
       } else {
         return false
       }
-      console.log(res)
     },
     async userLogout({commit}) {
       const res = await $axios.get('/logout')

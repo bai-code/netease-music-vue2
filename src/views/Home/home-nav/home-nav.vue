@@ -239,18 +239,17 @@ export default {
     },
     closeDialog(flag){
       this.dialogVisible=flag
+    },
+    // 热搜列表详细   /search/hot/detail
+    async getRecommendMusic(){
+      const res =await this.$axios.get('/search/hot/detail')
+      console.log(res);
     }
    
   },
   mounted() {
     this.restaurants = this.loadAll()
-    // console.log(this.$store.state.loginModule.userInfo)
-    // this.$store.dispatch('loginModle/userLogin',{phone:'17179795962',password:'bgf1580087304'})
-    // this.$nextTick(()=>{
-
-    // })
-
-    // this.$store.dispatch('loginModule/userLogin',{phone:'17179795962',password:'bgf1580087304'})
+  //  this.getRecommendMusic()
   }
 }
 </script>

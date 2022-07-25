@@ -7,8 +7,17 @@
 			</el-header>
 
       <el-container class="home-main">
-        <el-aside width="200px">Aside</el-aside>
-        <el-main>Main</el-main>
+        <el-aside width="200px" class="aside-container">
+          <router-link class="router-link" :to='{name:"findMusic"}'>发现音乐</router-link>
+          <router-link class="router-link" :to='{name:"podcast"}'>播客</router-link>
+          <router-link class="router-link" :to='{name:"video"}'>视频</router-link>
+          <router-link class="router-link" :to='{name:"concern"}'>关注</router-link>
+          <router-link class="router-link" :to='{name:"personal-fm"}'>私人FM</router-link>
+
+        </el-aside>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
         
       </el-container>
       <el-footer>Footer</el-footer>
@@ -44,8 +53,27 @@ div.home {
     }
 		.el-container.home-main{
 			height: 100%;
-			.el-aside{
+			.el-aside.aside-container{
 				border-right: 1px solid @borderColor;
+        display: flex;
+        flex-direction: column;
+        padding-left: 30px;
+        .router-link{
+          height: 40px;
+          line-height: 40px;
+          margin: 5px 0;
+          background: @asideSelectColor;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+          padding-left: 10px;
+          text-decoration: none;
+          color: @asideFontColor;
+          font-size: 15px;
+        }
+        .router-link-active{
+          font-size: 17px;
+          font-weight: bolder;
+        }
 			}
 		}
 		.el-footer{
